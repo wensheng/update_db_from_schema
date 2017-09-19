@@ -1,0 +1,10 @@
+[db]
+# change to postgres for postgresql
+engine = mysql
+server = 127.0.0.1
+# for postgres, default is 5432
+port   = 3306
+name   = db_name
+user   = db_username
+passwd = db_password
+schema = schema.yml
