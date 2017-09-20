@@ -90,7 +90,7 @@ def get_db_column(c, t):
             return {'t': column1, 'n': isnull, 'd': column3}
 
 
-def update_db(force):
+def update_db(args):
     global DBCONN
     config = configparser.ConfigParser()
     config.read('db_config.ini')
@@ -102,11 +102,10 @@ def update_db(force):
     if cfg['engine'] not in ('mysql', 'postgres'):
         exit("Engine `%s` not supported, it's either mysql or postgres" % cfg['engine'])
 
-    schema_file = cfg.get("schema", "schema.yml")
-    if not os.path.isfile(schema_file):
-        exit("schema yaml file `%s` doesn't exist" % schema_file)
+    if not os.path.isfile(args.schema):
+        exit("schema yaml file `%s` doesn't exist" % args.schema)
 
-    with open(schema_file) as f:
+    with open(args.schema) as f:
         ym_tables = yaml.load(f.read())
 
     if not isinstance(ym_tables, dict):
@@ -220,19 +219,19 @@ def update_db(force):
     cur = DBCONN.cursor()
     if create_table_sql:
         print(create_table_sql)
-        if force:
+        if args.force:
             cur.execute(create_table_sql)
             DBCONN.commit()
 
     if drop_table_sql:
         print(drop_table_sql)
-        if force:
+        if args.force:
             cur.execute(drop_table_sql)
             DBCONN.commit()
 
     if alter_table_sql:
         print("\n".join(alter_table_sql))
-        if force:
+        if args.force:
             cur.execute("".join(alter_table_sql))
             DBCONN.commit()
 
@@ -241,7 +240,7 @@ def update_db(force):
 
     print("")
     if create_table_sql or drop_table_sql or alter_table_sql:
-        if force:
+        if args.force:
             print("Datebase written.")
         else:
             print("The database has not been written. \n"

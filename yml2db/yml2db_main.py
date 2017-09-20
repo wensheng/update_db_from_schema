@@ -17,6 +17,10 @@ def main():
                       action='store_true',
                       default=False,
                       help="write to database, without this database will not be changed")
+    argp.add_argument('-s', '--schema',
+                      action='store',
+                      default="schema.yml",
+                      help="specify a schemal YAML file, default is `schema.yml`")
     argp.add_argument('-e', '--example',
                       action='store_true',
                       default=False,
@@ -32,7 +36,7 @@ def main():
     if not os.path.isfile("db_config.ini"):
         exit("No db_config.ini found, use -e to create an example")
 
-    db_from_schema_yaml.update_db(args.force)
+    db_from_schema_yaml.update_db(args)
 
 
 if "__main__" == __name__:
