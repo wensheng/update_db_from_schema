@@ -1,0 +1,12 @@
+test1:
+  column1:
+    t: int
+    n: no
+    d: 0
+  column3:
+    t: varchar(100)
+    n: no
+    d: "bar"
+  column4:
+    t: jsonb
+    n: yes

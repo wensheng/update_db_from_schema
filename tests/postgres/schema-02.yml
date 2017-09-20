@@ -1,0 +1,9 @@
+test1:
+  column1:
+    t: int
+    n: no
+    d: 0
+  column2:
+    t: smallint
+    n: no
+    d: 99

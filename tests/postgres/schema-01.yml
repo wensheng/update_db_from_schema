@@ -1,0 +1,5 @@
+test1:
+  column1:
+    t: int
+    n: no
+    d: 0
