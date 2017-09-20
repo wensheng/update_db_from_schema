@@ -7,4 +7,3 @@ port   = 3306
 name   = db_name
 user   = db_username
 passwd = db_password
-schema = schema.yml

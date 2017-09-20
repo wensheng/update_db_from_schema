@@ -29,7 +29,7 @@ def main():
 
     if args.example:
         sample_config = resource_filename(Requirement.parse("yml2db"),
-                                          "data/db_config.ini.sample")
+                                          "yml2db/db_config.ini.sample")
         shutil.copy(sample_config, "./")
         exit()
 

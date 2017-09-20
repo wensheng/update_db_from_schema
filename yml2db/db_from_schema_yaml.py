@@ -151,7 +151,7 @@ def update_db(args):
     # sql to add tables
     create_table_sql = ""
     for t in add_tables:
-        create_table_sql = "%s\nCREATE TABLE %s (id " % (create_table_sql, t)
+        create_table_sql = "%s\nCREATE TABLE %s (\nid " % (create_table_sql, t)
         if cfg['engine'] == 'mysql':
             create_table_sql = "%s int NOT NULL AUTO_INCREMENT PRIMARY KEY" % create_table_sql
         else:
@@ -165,7 +165,7 @@ def update_db(args):
     # sql to delete tables
     drop_table_sql = ""
     for t in delete_tables:
-        drop_table_sql = "%s\ndrop table %s;" % (drop_table_sql, t)
+        drop_table_sql = "%s\nDROP TABLE %s;" % (drop_table_sql, t)
 
     # sql list to alter tables
     alter_table_sql = []
@@ -176,10 +176,10 @@ def update_db(args):
         current_columns = [c for c in ym_tables[t].keys() if c in db_columns]
         for c in add_columns:
             nullstr, defaultstr = get_null_default_str(ym_tables[t][c])
-            alter_table_sql.append("alter table %s add column %s %s %s %s;" %
+            alter_table_sql.append("ALTER TABLE %s ADD COLUMN %s %s %s %s;" %
                                    (t, c, ym_tables[t][c]['t'], nullstr, defaultstr))
         for c in delete_columns:
-            alter_table_sql.append("alter table %s drop %s;" % (t, c))
+            alter_table_sql.append("ALTER TABLE %s DROP %s;" % (t, c))
         for c in current_columns:
             db_c = get_db_column(c, db_tables[t])
             # ym_type = sized_type(ym_tables[t][c]['t'])
@@ -203,17 +203,17 @@ def update_db(args):
             #    nullstr, defaultstr = get_null_default_str(ym_tables[t][c])
             #    alter_table_sql.append("alter table %s modify %s %s %s %s;"%(t,c,ym_tables[t][c]['t'],nullstr,defaultstr))
             if diff_type:
-                alter_table_sql.append("alter table %s alter column %s type %s;" %
+                alter_table_sql.append("ALTER TABLE %s ALTER COLUMN %s TYPE %s;" %
                                        (t, c, ym_tables[t][c]['t']))
             if diff_null:
                 if ym_tables[t][c]['n']:
                     # from NOT NULL to NULL
-                    alter_table_sql.append("alter table %s alter column %s drop NOT NULL;" % (t, c))
+                    alter_table_sql.append("ALTER TABLE %s ALTER COLUMN %s DROP NOT NULL;" % (t, c))
                 else:
                     # from NULL to NOT NULL
-                    alter_table_sql.append("alter table %s alter column %s set NOT NULL;" % (t, c))
+                    alter_table_sql.append("ALTER TABLE %s ALTER COLUMN %s SET NOT NULL;" % (t, c))
             if diff_default:
-                alter_table_sql.append("alter table %s alter column %s %s;" %
+                alter_table_sql.append("ALTER TABLE %s ALTER COLUMN %s %s;" %
                                        (t, c, get_default_str(ym_tables[t][c])))
 
     cur = DBCONN.cursor()
