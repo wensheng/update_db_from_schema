@@ -69,6 +69,7 @@ def get_null_default_str(column):
 
 
 def coerce_ymc_type(s, engine):
+    s = s.lower()
     if engine == 'postgres':
         if s == 'int':
             return 'integer'
@@ -118,12 +119,12 @@ def get_db_column(c, t):
                 column1 = column[4].split('::')[1]
             else:
                 column1 = column[1]
-            if column[4]:
+            if column[4] is None:
+                column4 = None
+            else:
                 column4 = column[4].split('::')[0]
                 if column4.startswith("'") and column4.endswith("'"):
                     column4 = column4[1:-1]
-            else:
-                column4 = None
 
             if len(column) > 6 and column[6] is not None:
                 # postgres character_maximum_length
